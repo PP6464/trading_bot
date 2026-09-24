@@ -1,5 +1,5 @@
-use base64::{Engine as _, engine::general_purpose::STANDARD};
 use crate::config::config::Config;
+use base64::{engine::general_purpose::STANDARD, Engine as _};
 use reqwest::Url;
 
 #[derive(Debug, Clone)]
@@ -17,7 +17,9 @@ macro_rules! method_request_builder {
         pub fn $method(&self, endpoint: &str) -> reqwest::RequestBuilder {
             assert!(!endpoint.starts_with('/'), "Endpoint starts with a '/'");
             let url = self.base_url.join(endpoint).expect("Endpoint is invalid");
-            self.client.$method(url).header("Authorization", &self.auth_header)
+            self.client
+                .$method(url)
+                .header("Authorization", &self.auth_header)
         }
     };
 }
@@ -28,8 +30,12 @@ impl Client {
         Client {
             client: reqwest::Client::new(),
             base_url: Url::parse(&config.api_url_base).ok()?,
-            auth_header: format!("Basic {}", STANDARD.encode(format!("{}:{}", config.api_key, config.api_secret))),
-        }.into()
+            auth_header: format!(
+                "Basic {}",
+                STANDARD.encode(format!("{}:{}", config.api_key, config.api_secret))
+            ),
+        }
+        .into()
     }
 
     method_request_builder!(get);
