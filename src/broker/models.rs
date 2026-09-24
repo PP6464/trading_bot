@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -5,7 +6,7 @@ pub struct Position {
     #[serde(rename = "averagePricePaid")]
     pub average_price_paid: f64,
     #[serde(rename = "createdAt")]
-    pub created_at: String,
+    pub created_at: DateTime<Utc>,
     #[serde(rename = "currentPrice")]
     pub current_price: f64,
     pub instrument: Instrument,
