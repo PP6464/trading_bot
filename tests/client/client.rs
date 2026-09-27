@@ -10,6 +10,9 @@ mod client_tests {
             api_url_base: "https://api.example/v1/".to_owned(),
             api_key: "key".to_owned(),
             api_secret: "secret".to_owned(),
+            db_url: "db_url".to_owned(),
+            history_length_days: 60,
+            deactivated_purge_days: 60,
         })
             .expect("valid configuration should create a client")
     }
@@ -53,6 +56,9 @@ mod client_tests {
             api_url_base: "not a url".to_owned(),
             api_key: "key".to_owned(),
             api_secret: "secret".to_owned(),
+            db_url: "db_url".to_owned(),
+            history_length_days: 60,
+            deactivated_purge_days: 60,
         };
 
         assert!(Client::from_config(&config).is_none());

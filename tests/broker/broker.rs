@@ -13,6 +13,9 @@ mod broker_tests {
             api_url_base: format!("http://{}/v1/", listener.local_addr().unwrap()),
             api_key: "key".to_owned(),
             api_secret: "secret".to_owned(),
+            db_url: "db_url".to_string(),
+            history_length_days: 60,
+            deactivated_purge_days: 60,
         })
         .expect("test configuration should create a client")
     }

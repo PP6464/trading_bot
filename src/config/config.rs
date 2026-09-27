@@ -3,6 +3,9 @@ pub struct Config {
     pub api_url_base: String,
     pub api_key: String,
     pub api_secret: String,
+    pub db_url: String,
+    pub history_length_days: u32,
+    pub deactivated_purge_days: u32,
 }
 
 impl Config {
@@ -15,6 +18,9 @@ impl Config {
 
     pub fn from_env(get_var: impl Fn(&str) -> Option<String>) -> Option<Config> {
         let env = get_var("ENV")?;
+        let history_length_days = get_var("HISTORY_LENGTH_DAYS")?.parse::<u32>().ok()?;
+        let deactivated_purge_days = get_var("DEACTIVATION_PURGE_DAYS")?.parse::<u32>().ok()?;
+        let db_url = get_var("DATABASE_URL")?;
         match env.as_str() {
             "demo" => {
                 let api_url = get_var("DEMO_API_URL")?;
@@ -27,6 +33,9 @@ impl Config {
                     api_url_base: api_url,
                     api_key,
                     api_secret,
+                    db_url,
+                    history_length_days,
+                    deactivated_purge_days,
                 })
             }
             "live" => {
@@ -40,6 +49,9 @@ impl Config {
                     api_url_base: api_url,
                     api_key,
                     api_secret,
+                    db_url,
+                    history_length_days,
+                    deactivated_purge_days,
                 })
             }
             _ => None,
